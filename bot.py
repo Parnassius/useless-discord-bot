@@ -30,6 +30,7 @@ class MyBot(commands.Bot):
         msg = str(exception)
         if (
             isinstance(exception, discord.ext.commands.errors.CommandInvokeError)
+            and not isinstance(exception.original, discord.HTTPException)
             and exception.__traceback__
         ):
             msg += f"\n```{''.join(format_tb(exception.__traceback__))}```"

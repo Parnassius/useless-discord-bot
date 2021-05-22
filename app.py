@@ -1,7 +1,9 @@
 from glob import glob
 from os.path import basename, dirname, isfile, join
+from typing import Any
 
 import discord  # type: ignore
+from discord.ext import commands  # type: ignore
 from environs import Env
 
 from bot import MyBot
@@ -16,7 +18,19 @@ if __name__ == "__main__":
     intents = discord.Intents.default()
     intents.members = True
 
-    bot = MyBot(".", help_command=None, intents=intents, owner_id=owner_id)
+    class MyHelpCommand(commands.DefaultHelpCommand):
+        async def send_bot_help(self, mapping: Any) -> None:
+            self.paginator.add_line(".help [command]")
+            await self.send_pages()
+
+    help_command = MyHelpCommand(command_attrs={"help": ""})
+
+    bot = MyBot(
+        ".",
+        intents=intents,
+        owner_id=owner_id,
+        help_command=help_command,
+    )
 
     modules = glob(join(dirname(__file__), "plugins", "*.py"))
 

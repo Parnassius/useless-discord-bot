@@ -15,8 +15,11 @@ authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "3.9.*"
-environs = "9.3.2"
+aiohttp = "3.7.4.post0"
+cairosvg = "2.5.2"
 "discord.py" = "1.7.2"
+environs = "9.3.2"
+
 
 [tool.poetry.dev-dependencies]
 black = "21.5b1"
