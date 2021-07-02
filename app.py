@@ -16,7 +16,7 @@ if __name__ == "__main__":
     owner_id = env.int("OWNER_ID")
 
     intents = discord.Intents.default()
-    intents.members = True
+    intents.members = True  # pylint: disable=assigning-non-slot
 
     class MyHelpCommand(commands.DefaultHelpCommand):
         async def send_bot_help(self, mapping: Any) -> None:
