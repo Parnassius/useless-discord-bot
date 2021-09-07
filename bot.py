@@ -10,6 +10,19 @@ class MyBot(commands.Bot):
     async def on_ready(self) -> None:
         print(f"Logged on as {self.user}!")
 
+        for guild in self.guilds:
+            if not guild.me.guild_permissions.manage_roles:
+                continue
+            for category in guild.categories:
+                if not category.overwrites_for(guild.default_role).manage_channels:
+                    continue
+                for channel in category.text_channels:
+                    if not channel.overwrites_for(guild.default_role).manage_channels:
+                        continue
+                    await channel.set_permissions(
+                        channel.guild.default_role, manage_channels=None
+                    )
+
     async def on_error(self, event_method: str, *args: Any, **kwargs: Any) -> None:
         target: discord.abc.Messageable = await self.fetch_user(self.owner_id)
         for i in args:
@@ -40,4 +53,12 @@ class MyBot(commands.Bot):
         if not isinstance(channel, discord.TextChannel):
             return
 
-        await channel.set_permissions(channel.guild.default_role, manage_channels=None)
+        if (
+            channel.guild.me.guild_permissions.manage_roles
+            and channel.category.overwrites_for(
+                channel.guild.default_role
+            ).manage_channels
+        ):
+            await channel.set_permissions(
+                channel.guild.default_role, manage_channels=None
+            )
