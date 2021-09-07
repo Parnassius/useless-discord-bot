@@ -81,6 +81,7 @@ disable = [
     "missing-module-docstring",
 
     "too-many-locals",
+    "too-many-statements",
 ]
 
 [tool.pylint.format]
