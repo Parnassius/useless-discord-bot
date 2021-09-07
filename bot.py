@@ -41,12 +41,3 @@ class MyBot(commands.Bot):
             return
 
         await channel.set_permissions(channel.guild.default_role, manage_channels=None)
-
-        creator = (
-            await channel.guild.audit_logs(
-                action=discord.AuditLogAction.channel_create
-            ).get(target=channel)
-        ).user
-        await channel.set_permissions(
-            creator, manage_channels=True, manage_messages=True
-        )
