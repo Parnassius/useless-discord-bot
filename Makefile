@@ -2,15 +2,9 @@
 all: tests
 
 
-.venv/.flag: .python-version poetry.lock
-	@poetry config --local virtualenvs.in-project true
-	@cmp --silent .python-version .venv/.flag || rm -rf .venv
-	@poetry install --remove-untracked
-	@cp .python-version .venv/.flag
-	@touch .python-version
-
 .PHONY: deps
-deps: .venv/.flag
+deps: poetry.lock
+	@poetry install --remove-untracked
 
 
 .PHONY: format
