@@ -27,6 +27,10 @@ jobs:
           poetry-${{ steps.setup-python.outputs.python-version }}-
     - name: Install Poetry
       run: pipx install poetry
+    - name: Setup the virtual environment
+      run: |
+        poetry config --local virtualenvs.in-project true
+        poetry env use $(which python)
     - name: Install dependencies on a cache miss...
       if: steps.virtualenv-cache.outputs.cache-hit != 'true'
       run: make deps
