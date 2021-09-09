@@ -13,6 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up python 3.9
+      id: setup-python
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
@@ -21,13 +22,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .venv
-        key: poetry-${{ hashFiles('**/poetry.lock') }}
+        key: poetry-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
         restore-keys: |
-          poetry-
+          poetry-${{ steps.setup-python.outputs.python-version }}-
     - name: Install Poetry
-      run: curl -fsS https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - -y
-    - name: Update PATH
-      run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+      run: pipx install poetry
     - name: Install dependencies on a cache miss...
       if: steps.virtualenv-cache.outputs.cache-hit != 'true'
       run: make deps
