@@ -80,7 +80,7 @@ def setup(bot: MyBot) -> None:
             )
             return
 
-        await ctx.channel.edit(topic=" ".join(new_topic))
+        await ctx.channel.edit(topic=new_topic)
         await ctx.reply("Done.")
 
     @bot.command(aliases=["unpin"])
