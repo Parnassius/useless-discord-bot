@@ -1,3 +1,5 @@
+# pylint: disable=no-self-use
+
 from sys import exc_info
 from traceback import format_tb
 from typing import Any
