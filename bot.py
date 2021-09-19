@@ -57,6 +57,7 @@ class MyBot(commands.Bot):
 
         if (
             channel.guild.me.guild_permissions.manage_roles
+            and channel.category
             and channel.category.overwrites_for(
                 channel.guild.default_role
             ).manage_channels
