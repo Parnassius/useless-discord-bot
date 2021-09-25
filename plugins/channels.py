@@ -41,7 +41,7 @@ def setup(bot: MyBot) -> None:
             return
 
         await ctx.channel.move(**kwargs)
-        await ctx.message.delete()
+        await ctx.reply("Done.")
 
     @bot.command()
     @commands.guild_only()
