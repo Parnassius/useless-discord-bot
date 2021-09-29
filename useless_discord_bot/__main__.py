@@ -6,9 +6,10 @@ import discord  # type: ignore
 from discord.ext import commands  # type: ignore
 from environs import Env
 
-from bot import MyBot
+from .bot import MyBot
 
-if __name__ == "__main__":
+
+def main() -> None:
     env = Env()
     env.read_env()
 
@@ -37,6 +38,10 @@ if __name__ == "__main__":
     for f in modules:
         if isfile(f) and not f.endswith("__init__.py"):
             name = basename(f)[:-3]
-            bot.load_extension(f"plugins.{name}")
+            bot.load_extension(f"useless_discord_bot.plugins.{name}")
 
     bot.run(token)
+
+
+if __name__ == "__main__":
+    main()
