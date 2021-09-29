@@ -58,12 +58,14 @@ cairosvg = "2.5.2"
 environs = "9.3.3"
 pillow = "8.3.2"
 
-
 [tool.poetry.dev-dependencies]
 black = "21.8b0"
 isort = "5.9.3"
 mypy = "0.910"
 pylint = "2.11.1"
+
+[tool.poetry.scripts]
+bot = "useless_discord_bot.__main__:main"
 
 
 [tool.pylint.master]
