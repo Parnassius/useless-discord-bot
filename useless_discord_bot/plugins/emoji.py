@@ -7,7 +7,7 @@ from cairosvg import svg2png  # type: ignore
 from discord.ext import commands  # type: ignore
 from PIL import Image, ImageColor, ImageDraw  # type: ignore
 
-from bot import MyBot
+from useless_discord_bot.bot import MyBot
 
 TWEMOJI_URL = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/"
 TWEMOJI_SVG_URL = f"{TWEMOJI_URL}svg/{{}}.svg"

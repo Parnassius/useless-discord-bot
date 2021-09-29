@@ -3,7 +3,7 @@ from typing import TypedDict, Union
 import discord  # type: ignore
 from discord.ext import commands  # type: ignore
 
-from bot import MyBot
+from useless_discord_bot.bot import MyBot
 
 
 def setup(bot: MyBot) -> None:

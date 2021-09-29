@@ -1,7 +1,7 @@
 from discord.ext import commands  # type: ignore
 
-import checks
-from bot import MyBot
+from useless_discord_bot import checks
+from useless_discord_bot.bot import MyBot
 
 
 def setup(bot: MyBot) -> None:
