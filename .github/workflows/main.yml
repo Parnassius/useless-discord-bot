@@ -30,18 +30,15 @@ jobs:
     - name: Setup the virtual environment
       run: |
         poetry config --local virtualenvs.in-project true
-        poetry env use $(which python)
-    - name: Install dependencies on a cache miss...
+        poetry env use "$(which python)"
+    - name: Install dependencies on a cache miss
       if: steps.virtualenv-cache.outputs.cache-hit != 'true'
-      run: make deps
-    - name: ...or mark them as up-to-date on a cache hit
-      if: steps.virtualenv-cache.outputs.cache-hit == 'true'
-      run: make deps --touch
+      run: poetry install --remove-untracked
     - name: Check import order
-      run: make isort_check
+      run: poetry run poe isort_check
     - name: Check formatting using black
-      run: make black_check
+      run: poetry run poe black_check
     - name: Test with mypy
-      run: make mypy
+      run: poetry run poe mypy
     - name: Test with pylint
-      run: make pylint
+      run: poetry run poe pylint

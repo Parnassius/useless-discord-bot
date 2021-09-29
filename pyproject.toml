@@ -44,6 +44,19 @@ implicit_reexport = false
 strict_equality = true
 
 
+[tool.poe.tasks]
+format = ["isort", "black"]
+isort = "isort ."
+black = "black ."
+
+tests = ["test"]
+test = ["isort_check", "black_check", "mypy", "pylint"]
+isort_check = "isort . --check"
+black_check = "black . --check"
+mypy = "mypy . --namespace-packages --explicit-package-bases"
+pylint = "pylint useless_discord_bot --disable=fixme"
+
+
 [tool.poetry]
 name = "useless-discord-bot"
 version = "0.1.0"
@@ -51,7 +64,7 @@ description = ""
 authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
-python = "3.9.*"
+python = "^3.9"
 aiohttp = "3.7.4.post0"
 cairosvg = "2.5.2"
 "discord.py" = "1.7.2"
@@ -62,6 +75,7 @@ pillow = "8.3.2"
 black = "21.8b0"
 isort = "5.9.3"
 mypy = "0.910"
+poethepoet = "0.10.0"
 pylint = "2.11.1"
 
 [tool.poetry.scripts]
