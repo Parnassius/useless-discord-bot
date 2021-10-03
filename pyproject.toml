@@ -102,6 +102,3 @@ disable = [
 
 [tool.pylint.format]
 max-line-length = "88"
-
-[tool.pylint.typing]
-runtime-typing = "yes"
