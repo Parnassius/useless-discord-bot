@@ -53,7 +53,7 @@ tests = ["test"]
 test = ["isort_check", "black_check", "mypy", "pylint"]
 isort_check = "isort . --check"
 black_check = "black . --check"
-mypy = "mypy . --namespace-packages --explicit-package-bases"
+mypy = "mypy useless_discord_bot"
 pylint = "pylint useless_discord_bot --disable=fixme"
 
 
