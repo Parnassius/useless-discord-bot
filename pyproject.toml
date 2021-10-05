@@ -64,7 +64,7 @@ description = ""
 authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 aiohttp = "3.7.4.post0"
 cairosvg = "2.5.2"
 "discord.py" = "1.7.2"
