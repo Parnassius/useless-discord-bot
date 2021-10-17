@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import TypedDict, Union
 
 import discord  # type: ignore
 from discord.ext import commands  # type: ignore
@@ -10,7 +10,8 @@ def setup(bot: MyBot) -> None:
     @bot.command()
     @commands.guild_only()
     async def moveto(
-        ctx: commands.Context, channel: discord.CategoryChannel | discord.TextChannel
+        ctx: commands.Context,
+        channel: Union[discord.CategoryChannel, discord.TextChannel],
     ) -> None:
         if not ctx.channel.category.overwrites_for(
             ctx.guild.default_role
