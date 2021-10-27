@@ -98,6 +98,8 @@ disable = [
 
     "too-many-locals",
     "too-many-statements",
+
+    "consider-alternative-union-syntax",
 ]
 enable = ["useless-suppression"]
 
