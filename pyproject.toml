@@ -86,6 +86,7 @@ bot = "useless_discord_bot.__main__:main"
 load-plugins = [
     "pylint.extensions.bad_builtin",
     "pylint.extensions.check_elif",
+    "pylint.extensions.for_any_all",
     "pylint.extensions.typing",
 ]
 
