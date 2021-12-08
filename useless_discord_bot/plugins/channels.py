@@ -41,7 +41,7 @@ def setup(bot: MyBot) -> None:
             return
 
         await ctx.channel.move(**kwargs)
-        await ctx.reply("Done.")
+        await ctx.message.delete()
 
     @bot.command()
     @commands.guild_only()
@@ -61,7 +61,7 @@ def setup(bot: MyBot) -> None:
             return
 
         await ctx.channel.edit(name=new_name)
-        await ctx.reply("Done.")
+        await ctx.message.delete()
 
     @bot.command()
     @commands.guild_only()
@@ -81,7 +81,7 @@ def setup(bot: MyBot) -> None:
             return
 
         await ctx.channel.edit(topic=new_topic)
-        await ctx.reply("Done.")
+        await ctx.message.delete()
 
     @bot.command(aliases=["unpin"])
     @commands.guild_only()
@@ -115,9 +115,9 @@ def setup(bot: MyBot) -> None:
                 await ctx.reply("The message is not pinned.")
                 return
             await msg.unpin()
-            await ctx.reply("Done.")
         else:
             if msg.pinned:
                 await ctx.reply("The message is already pinned.")
                 return
             await msg.pin()
+        await ctx.message.delete()
