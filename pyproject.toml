@@ -72,7 +72,7 @@ environs = "9.3.5"
 pillow = "8.4.0"
 
 [tool.poetry.dev-dependencies]
-black = "21.11b1"
+black = "21.12b0"
 isort = "5.10.0"
 mypy = "0.910"
 poethepoet = "0.11.0"
