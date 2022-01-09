@@ -191,7 +191,7 @@ voice = ["PyNaCl (>=1.3.0,<1.5)"]
 
 [[package]]
 name = "environs"
-version = "9.3.5"
+version = "9.4.0"
 description = "simplified environment variable parsing"
 category = "main"
 optional = false
@@ -448,7 +448,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "1ed9012063750046a904fcffacce2c3e97a550f0bbe3a7238c9925cb56522369"
+content-hash = "39b6e48a8bad485232104ce3d13b05ecb6339da51d55805be344eecd0e385a63"
 
 [metadata.files]
 aiohttp = [
@@ -590,8 +590,8 @@ defusedxml = [
     {file = "discord.py-1.7.2.tar.gz", hash = "sha256:114e76cd27362fb919abf7f001a2dbdc77c9a67cff74ed6a89aecd6582ee298e"},
 ]
 environs = [
-    {file = "environs-9.3.5-py2.py3-none-any.whl", hash = "sha256:f5a3ca00afd32a82e098597c7dc8899bea5ed451d31055e518e8c7681cdf1c2b"},
-    {file = "environs-9.3.5.tar.gz", hash = "sha256:47128992b854cf7e279e62127100767d765a1ead8d22f355e63c00661550131b"},
+    {file = "environs-9.4.0-py2.py3-none-any.whl", hash = "sha256:b5a197f70c590e8ad2d60d145ea2a2e90d4b1b05cdd04f8e18132d2760123971"},
+    {file = "environs-9.4.0.tar.gz", hash = "sha256:b1cb81fbc0568d85c8ca32328e17bd756a2bb16cff54371d18d15d1832b692aa"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
