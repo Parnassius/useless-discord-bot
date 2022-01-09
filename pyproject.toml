@@ -68,7 +68,7 @@ python = "^3.10"
 aiohttp = "3.7.4.post0"
 cairosvg = "2.5.2"
 "discord.py" = "1.7.2"
-environs = "9.3.5"
+environs = "9.4.0"
 pillow = "8.4.0"
 
 [tool.poetry.dev-dependencies]
