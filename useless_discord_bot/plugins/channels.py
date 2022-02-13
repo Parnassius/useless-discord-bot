@@ -1,7 +1,8 @@
 from typing import TypedDict, Union
 
-import discord  # type: ignore
-from discord.ext import commands  # type: ignore
+from disnake.channel import CategoryChannel, TextChannel
+from disnake.ext import commands
+from disnake.message import Message
 
 from useless_discord_bot.bot import MyBot
 
@@ -11,7 +12,7 @@ def setup(bot: MyBot) -> None:
     @commands.guild_only()
     async def moveto(
         ctx: commands.Context,
-        channel: Union[discord.CategoryChannel, discord.TextChannel],
+        channel: Union[CategoryChannel, TextChannel],
     ) -> None:
         if not ctx.channel.category.overwrites_for(
             ctx.guild.default_role
@@ -21,14 +22,20 @@ def setup(bot: MyBot) -> None:
 
         class KwargsDict(TypedDict, total=False):
             end: bool
-            after: discord.TextChannel
-            category: discord.CategoryChannel
+            after: TextChannel
+            category: CategoryChannel | None
 
         kwargs: KwargsDict
-        if isinstance(channel, discord.CategoryChannel):
+        if isinstance(channel, CategoryChannel):
             kwargs = {"end": True, "category": channel}
         else:
             kwargs = {"after": channel, "category": channel.category}
+
+        if kwargs["category"] is None:
+            await ctx.reply(
+                f"Cannot move this channel near the '{kwargs['after']}' channel."
+            )
+            return
 
         if (
             not kwargs["category"]
@@ -106,7 +113,7 @@ def setup(bot: MyBot) -> None:
 
         msg = ctx.message.reference.resolved
 
-        if not isinstance(msg, discord.Message):
+        if not isinstance(msg, Message):
             await ctx.reply("Unable to fetch the message.")
             return
 

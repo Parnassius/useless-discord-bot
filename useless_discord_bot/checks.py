@@ -1,4 +1,4 @@
-from discord.ext import commands  # type: ignore
+from disnake.ext import commands
 
 
 def is_bot_owner(ctx: commands.Context) -> bool:

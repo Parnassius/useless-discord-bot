@@ -2,8 +2,8 @@ from glob import glob
 from os.path import basename, dirname, isfile, join
 from typing import Any
 
-import discord  # type: ignore
-from discord.ext import commands  # type: ignore
+from disnake.ext import commands
+from disnake.flags import Intents
 from environs import Env
 
 from .bot import MyBot
@@ -16,7 +16,7 @@ def main() -> None:
     token = env.str("TOKEN")
     owner_id = env.int("OWNER_ID")
 
-    intents = discord.Intents.default()
+    intents = Intents.default()
     intents.members = True  # pylint: disable=assigning-non-slot
 
     class MyHelpCommand(commands.DefaultHelpCommand):

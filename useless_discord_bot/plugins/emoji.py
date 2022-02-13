@@ -2,9 +2,10 @@ import io
 import xml.etree.ElementTree as ET
 
 import aiohttp
-import discord  # type: ignore
 from cairosvg import svg2png  # type: ignore
-from discord.ext import commands  # type: ignore
+from disnake.embeds import Embed
+from disnake.ext import commands
+from disnake.file import File
 from PIL import Image, ImageColor, ImageDraw  # type: ignore
 
 from useless_discord_bot.bot import MyBot
@@ -79,7 +80,7 @@ def setup(bot: MyBot) -> None:
                 im.save(colors_image, format="PNG")
             colors_image.seek(0)
 
-            embed = discord.Embed(title="Original colors")
+            embed = Embed(title="Original colors")
 
             embed.set_thumbnail(url=emoji_png_url)
             embed.set_image(url="attachment://colors.png")
@@ -90,7 +91,7 @@ def setup(bot: MyBot) -> None:
                     f"This emoji needs {len(original_colors)} colors, "
                     f"{len(colors)} were provided."
                 ),
-                file=discord.File(colors_image, filename="colors.png"),
+                file=File(colors_image, filename="colors.png"),
                 embed=embed,
             )
             return

@@ -4,8 +4,10 @@ from sys import exc_info
 from traceback import format_tb
 from typing import Any
 
-import discord  # type: ignore
-from discord.ext import commands  # type: ignore
+from disnake.abc import GuildChannel, Messageable
+from disnake.channel import TextChannel
+from disnake.errors import HTTPException
+from disnake.ext import commands
 
 
 class MyBot(commands.Bot):
@@ -26,9 +28,10 @@ class MyBot(commands.Bot):
                     )
 
     async def on_error(self, event_method: str, *args: Any, **kwargs: Any) -> None:
-        target: discord.abc.Messageable = await self.fetch_user(self.owner_id)
+        # pylint: disable=unused-argument
+        target: Messageable = await self.fetch_user(self.owner_id)
         for i in args:
-            if isinstance(i, discord.abc.Messageable):
+            if isinstance(i, Messageable):
                 target = i
                 break
         _, val, tb = exc_info()
@@ -44,15 +47,15 @@ class MyBot(commands.Bot):
             return
         msg = str(exception)
         if (
-            isinstance(exception, discord.ext.commands.errors.CommandInvokeError)
-            and not isinstance(exception.original, discord.HTTPException)
+            isinstance(exception, commands.errors.CommandInvokeError)
+            and not isinstance(exception.original, HTTPException)
             and exception.__traceback__
         ):
             msg += f"\n```{''.join(format_tb(exception.__traceback__))}```"
         await context.reply(msg)
 
-    async def on_guild_channel_create(self, channel: discord.abc.GuildChannel) -> None:
-        if not isinstance(channel, discord.TextChannel):
+    async def on_guild_channel_create(self, channel: GuildChannel) -> None:
+        if not isinstance(channel, TextChannel):
             return
 
         if (

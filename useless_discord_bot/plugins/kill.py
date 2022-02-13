@@ -1,4 +1,4 @@
-from discord.ext import commands  # type: ignore
+from disnake.ext import commands
 
 from useless_discord_bot import checks
 from useless_discord_bot.bot import MyBot
