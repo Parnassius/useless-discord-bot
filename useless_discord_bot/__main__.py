@@ -1,8 +1,6 @@
 from glob import glob
 from os.path import basename, dirname, isfile, join
-from typing import Any
 
-from disnake.ext import commands
 from disnake.flags import Intents
 from environs import Env
 
@@ -19,18 +17,11 @@ def main() -> None:
     intents = Intents.default()
     intents.members = True  # pylint: disable=assigning-non-slot
 
-    class MyHelpCommand(commands.DefaultHelpCommand):
-        async def send_bot_help(self, mapping: Any) -> None:
-            self.paginator.add_line(".help [command]")
-            await self.send_pages()
-
-    help_command = MyHelpCommand(command_attrs={"help": ""})
-
     bot = MyBot(
         ".",
         intents=intents,
         owner_id=owner_id,
-        help_command=help_command,
+        help_command=None,
     )
 
     modules = glob(join(dirname(__file__), "plugins", "*.py"))
