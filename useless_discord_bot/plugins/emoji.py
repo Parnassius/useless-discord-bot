@@ -83,7 +83,7 @@ class ColorEmoji:
         self.svg = svg
 
         tags = ET.fromstring(self.svg).findall(".//*[@fill]")
-        self.original_colors = sorted(x for x in (i.get("fill") for i in tags) if x)
+        self.original_colors = sorted(x for x in {i.get("fill") for i in tags} if x)
         self.colors = self.original_colors.copy()
 
     async def send_embed(self, thumbnail_url: str) -> None:
