@@ -74,12 +74,10 @@ class ColorEmoji:
     def __init__(
         self,
         interaction: ApplicationCommandInteraction,
-        new_emoji_name: str,
         svg: str,
     ) -> None:
         self.interaction = interaction
 
-        self.new_emoji_name = new_emoji_name
         self.svg = svg
 
         tags = ET.fromstring(self.svg).findall(".//*[@fill]")
@@ -173,7 +171,7 @@ def setup(bot: MyBot) -> None:
         description="Create a new emoji by changing the colors of a default one."
     )
     async def coloremoji(
-        interaction: ApplicationCommandInteraction, emoji: str, new_emoji_name: str
+        interaction: ApplicationCommandInteraction, emoji: str
     ) -> None:
         emoji_code_point = to_code_point(emoji)
         emoji_svg_url = TWEMOJI_SVG_URL.format(emoji_code_point)
@@ -185,6 +183,6 @@ def setup(bot: MyBot) -> None:
                     return
                 svg = await resp.text()
 
-        ce = ColorEmoji(interaction, new_emoji_name, svg)
+        ce = ColorEmoji(interaction, svg)
 
         await ce.send_embed(emoji_png_url)
