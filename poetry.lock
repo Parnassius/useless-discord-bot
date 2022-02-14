@@ -208,7 +208,7 @@ voice = ["PyNaCl (>=1.3.0,<1.5)"]
 
 [[package]]
 name = "environs"
-version = "9.4.0"
+version = "9.5.0"
 description = "simplified environment variable parsing"
 category = "main"
 optional = false
@@ -473,7 +473,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "3672333a4da78c811f6e47a62bd312993fd83b53f066209e287845c3ed89a7be"
+content-hash = "4b6b2788e837ca082055e006ea4edef46fb7e60eeebbb54c465ace62fb268c1b"
 
 [metadata.files]
 aiohttp = [
@@ -654,8 +654,8 @@ disnake = [
     {file = "disnake-2.4.0.tar.gz", hash = "sha256:d7a9c83d5cbfcec42441dae1d96744f82c2a22403934db5d8862a8279ca4989c"},
 ]
 environs = [
-    {file = "environs-9.4.0-py2.py3-none-any.whl", hash = "sha256:b5a197f70c590e8ad2d60d145ea2a2e90d4b1b05cdd04f8e18132d2760123971"},
-    {file = "environs-9.4.0.tar.gz", hash = "sha256:b1cb81fbc0568d85c8ca32328e17bd756a2bb16cff54371d18d15d1832b692aa"},
+    {file = "environs-9.5.0-py2.py3-none-any.whl", hash = "sha256:1e549569a3de49c05f856f40bce86979e7d5ffbbc4398e7f338574c220189124"},
+    {file = "environs-9.5.0.tar.gz", hash = "sha256:a76307b36fbe856bdca7ee9161e6c466fd7fcffc297109a118c59b54e27e30c9"},
 ]
 frozenlist = [
     {file = "frozenlist-1.3.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d2257aaba9660f78c7b1d8fea963b68f3feffb1a9d5d05a18401ca9eb3e8d0a3"},
