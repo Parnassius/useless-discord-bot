@@ -2,7 +2,7 @@ from glob import glob
 from os.path import basename, dirname, isfile, join
 
 from disnake.flags import Intents
-from environs import Env
+from typenv import Env
 
 from .bot import MyBot
 

@@ -68,8 +68,8 @@ python = "^3.10"
 aiohttp = "3.8.1"
 cairosvg = "2.5.2"
 disnake = "2.4.0"
-environs = "9.5.0"
 pillow = "9.0.1"
+typenv = "0.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "22.1.0"
