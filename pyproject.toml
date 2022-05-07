@@ -73,7 +73,7 @@ typenv = "0.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "22.1.0"
-isort = "5.10.0"
+isort = "5.10.1"
 mypy = "0.931"
 poethepoet = "0.13.1"
 pylint = "2.12.2"
