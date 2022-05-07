@@ -72,11 +72,11 @@ pillow = "9.1.0"
 typenv = "0.2.0"
 
 [tool.poetry.dev-dependencies]
-black = "22.1.0"
-isort = "5.10.0"
-mypy = "0.931"
+black = "22.3.0"
+isort = "5.10.1"
+mypy = "0.950"
 poethepoet = "0.13.1"
-pylint = "2.12.2"
+pylint = "2.13.8"
 
 [tool.poetry.scripts]
 bot = "useless_discord_bot.__main__:main"
