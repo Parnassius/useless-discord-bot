@@ -46,7 +46,7 @@ class ChangeColorButton(Button["ChangeColorView"]):
         self.num = num
         self.color = color
 
-    async def callback(self, interaction: MessageInteraction) -> None:
+    async def callback(self, interaction: MessageInteraction, /) -> None:
         modal = ChangeColorModal(
             num=self.num,
             color=self.color,
