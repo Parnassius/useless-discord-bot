@@ -67,7 +67,7 @@ authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 python = "^3.10"
 aiohttp = "3.8.1"
 cairosvg = "2.5.2"
-disnake = "2.5.0"
+disnake = "2.5.1"
 pillow = "9.1.1"
 typenv = "0.2.0"
 
