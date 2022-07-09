@@ -67,22 +67,22 @@ authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 python = "^3.10"
 aiohttp = "3.8.1"
 cairosvg = "2.5.2"
-disnake = "2.5.0"
-pillow = "9.1.1"
+disnake = "2.5.1"
+pillow = "9.2.0"
 typenv = "0.2.0"
 
 [tool.poetry.dev-dependencies]
-black = "22.3.0"
+black = "22.6.0"
 isort = "5.10.1"
-mypy = "0.950"
-poethepoet = "0.13.1"
-pylint = "2.13.8"
+mypy = "0.961"
+poethepoet = "0.15.0"
+pylint = "2.14.4"
 
 [tool.poetry.scripts]
 bot = "useless_discord_bot.__main__:main"
 
 
-[tool.pylint.master]
+[tool.pylint.main]
 load-plugins = [
     "pylint.extensions.bad_builtin",
     "pylint.extensions.check_elif",
