@@ -76,7 +76,7 @@ black = "22.6.0"
 isort = "5.10.1"
 mypy = "0.961"
 poethepoet = "0.15.0"
-pylint = "2.14.4"
+pylint = "2.14.5"
 
 [tool.poetry.scripts]
 bot = "useless_discord_bot.__main__:main"
