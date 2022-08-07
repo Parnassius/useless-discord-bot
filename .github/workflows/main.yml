@@ -13,21 +13,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - name: Cache Poetry virtualenv
-        id: virtualenv-cache
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: poetry-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}
-          restore-keys: poetry-${{ steps.setup-python.outputs.python-version }}-
+          cache: "poetry"
       - name: Install Poetry
         run: pipx install poetry
-      - name: Setup the virtual environment
-        run: |
-          poetry config --local virtualenvs.in-project true
-          poetry env use "$(which python)"
       - name: Install dependencies on a cache miss
-        if: steps.virtualenv-cache.outputs.cache-hit != 'true'
+        if: steps.setup-python.outputs.cache-hit != 'true'
         run: poetry install --remove-untracked
       - name: Check import order
         run: poetry run poe isort_check
