@@ -67,16 +67,16 @@ authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 python = "^3.10"
 aiohttp = "3.8.1"
 cairosvg = "2.5.2"
-disnake = "2.5.1"
+disnake = "2.5.2"
 pillow = "9.2.0"
 typenv = "0.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "22.6.0"
 isort = "5.10.1"
-mypy = "0.961"
-poethepoet = "0.15.0"
-pylint = "2.14.4"
+mypy = "0.971"
+poethepoet = "0.16.0"
+pylint = "2.14.5"
 
 [tool.poetry.scripts]
 bot = "useless_discord_bot.__main__:main"
