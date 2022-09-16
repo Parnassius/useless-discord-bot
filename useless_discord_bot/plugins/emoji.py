@@ -28,7 +28,7 @@ class ChangeColorModal(Modal):
         )
         self.add_item(self.color)
 
-    async def on_submit(self, interaction: Interaction) -> None:
+    async def on_submit(self, interaction: Interaction, /) -> None:
         self.view.colors[self.num] = self.color.value
         await self.view.update_embed(interaction)
 

@@ -8,7 +8,9 @@ from .bot import MyBot
 
 
 class MyTree(CommandTree[MyBot]):
-    async def on_error(self, interaction: Interaction, error: AppCommandError) -> None:
+    async def on_error(
+        self, interaction: Interaction, error: AppCommandError, /
+    ) -> None:
         target = await interaction.client.fetch_user(
             interaction.client.owner_id  # type: ignore[attr-defined]
         )

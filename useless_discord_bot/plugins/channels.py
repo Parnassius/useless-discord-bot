@@ -59,13 +59,9 @@ async def setup(bot: MyBot) -> None:
 
         await interaction.response.defer(ephemeral=True)
         if after is None:
-            await interaction.channel.move(  # type: ignore[call-overload]
-                end=True, category=category
-            )
+            await interaction.channel.move(end=True, category=category)
         else:
-            await interaction.channel.move(  # type: ignore[call-overload]
-                after=after, category=category
-            )
+            await interaction.channel.move(after=after, category=category)
         await interaction.followup.send("Channel moved.")
 
     @bot.tree.command(description="Change the name of this channel.")
