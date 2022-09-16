@@ -1,24 +1,20 @@
-from disnake.abc import GuildChannel
-from disnake.channel import CategoryChannel, TextChannel
-from disnake.interactions.application_command import ApplicationCommandInteraction
-from disnake.message import Message
+from discord import CategoryChannel, Interaction, Message, TextChannel
+from discord.abc import GuildChannel
 
 from useless_discord_bot.bot import MyBot
 
 
-def setup(bot: MyBot) -> None:
-    @bot.slash_command(description="Move this channel to another category.")
-    async def moveto(
-        interaction: ApplicationCommandInteraction, channel: GuildChannel
-    ) -> None:
+async def setup(bot: MyBot) -> None:
+    @bot.tree.command(description="Move this channel to another category.")
+    async def moveto(interaction: Interaction, channel: GuildChannel) -> None:
         if interaction.guild is None:
-            await interaction.send(
+            await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
             )
             return
 
         if not isinstance(interaction.channel, TextChannel):
-            await interaction.send(
+            await interaction.response.send_message(
                 "This command can only be used in text channels.", ephemeral=True
             )
             return
@@ -29,7 +25,9 @@ def setup(bot: MyBot) -> None:
                 interaction.guild.default_role
             ).manage_channels
         ):
-            await interaction.send("Cannot move this channel.", ephemeral=True)
+            await interaction.response.send_message(
+                "Cannot move this channel.", ephemeral=True
+            )
             return
 
         category: CategoryChannel
@@ -39,7 +37,7 @@ def setup(bot: MyBot) -> None:
             after = None
         elif isinstance(channel, TextChannel):
             if channel.category is None:
-                await interaction.send(
+                await interaction.response.send_message(
                     f"Cannot move this channel near the '{channel}' channel.",
                     ephemeral=True,
                 )
@@ -47,13 +45,13 @@ def setup(bot: MyBot) -> None:
             category = channel.category
             after = channel
         else:
-            await interaction.send(
+            await interaction.response.send_message(
                 "You must specify a category or a text channel.", ephemeral=True
             )
             return
 
         if not category.overwrites_for(interaction.guild.default_role).manage_channels:
-            await interaction.send(
+            await interaction.response.send_message(
                 f"Cannot move this channel to the '{category}' category.",
                 ephemeral=True,
             )
@@ -68,15 +66,17 @@ def setup(bot: MyBot) -> None:
             await interaction.channel.move(  # type: ignore[call-overload]
                 after=after, category=category
             )
-        await interaction.send("Channel moved.")
+        await interaction.followup.send("Channel moved.")
 
-    @bot.slash_command(description="Change the name of this channel.")
-    async def name(interaction: ApplicationCommandInteraction, new_name: str) -> None:
+    @bot.tree.command(description="Change the name of this channel.")
+    async def name(interaction: Interaction, new_name: str) -> None:
         if interaction.guild is None:
-            await interaction.send(
+            await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
             )
             return
+
+        assert isinstance(interaction.channel, GuildChannel)
 
         if (
             interaction.channel.category is None
@@ -84,11 +84,13 @@ def setup(bot: MyBot) -> None:
                 interaction.guild.default_role
             ).manage_channels
         ):
-            await interaction.send("Cannot rename this channel.", ephemeral=True)
+            await interaction.response.send_message(
+                "Cannot rename this channel.", ephemeral=True
+            )
             return
 
         if not new_name or len(new_name) > 100:
-            await interaction.send(
+            await interaction.response.send_message(
                 "Channel names should be between 1 and 100 characters long.",
                 ephemeral=True,
             )
@@ -96,18 +98,18 @@ def setup(bot: MyBot) -> None:
 
         await interaction.response.defer(ephemeral=True)
         await interaction.channel.edit(name=new_name)
-        await interaction.send("Channel name updated.")
+        await interaction.followup.send("Channel name updated.")
 
-    @bot.slash_command(description="Change the topic of this channel.")
-    async def topic(interaction: ApplicationCommandInteraction, new_topic: str) -> None:
+    @bot.tree.command(description="Change the topic of this channel.")
+    async def topic(interaction: Interaction, new_topic: str) -> None:
         if interaction.guild is None:
-            await interaction.send(
+            await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
             )
             return
 
         if not isinstance(interaction.channel, TextChannel):
-            await interaction.send(
+            await interaction.response.send_message(
                 "This command can only be used in text channels.", ephemeral=True
             )
             return
@@ -118,13 +120,13 @@ def setup(bot: MyBot) -> None:
                 interaction.guild.default_role
             ).manage_channels
         ):
-            await interaction.send(
+            await interaction.response.send_message(
                 "Cannot change the topic of this channel.", ephemeral=True
             )
             return
 
         if not new_topic or len(new_topic) > 1024:
-            await interaction.send(
+            await interaction.response.send_message(
                 "Channel topics should be between 1 and 1024 characters long.",
                 ephemeral=True,
             )
@@ -132,15 +134,17 @@ def setup(bot: MyBot) -> None:
 
         await interaction.response.defer(ephemeral=True)
         await interaction.channel.edit(topic=new_topic)
-        await interaction.send("Channel topic updated.")
+        await interaction.followup.send("Channel topic updated.")
 
-    @bot.message_command(name="Pin message")
-    async def pin(interaction: ApplicationCommandInteraction, message: Message) -> None:
+    @bot.tree.context_menu(name="Pin message")
+    async def pin(interaction: Interaction, message: Message) -> None:
         if interaction.guild is None:
-            await interaction.send(
+            await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
             )
             return
+
+        assert isinstance(interaction.channel, GuildChannel)
 
         if (
             interaction.channel.category is None
@@ -148,28 +152,30 @@ def setup(bot: MyBot) -> None:
                 interaction.guild.default_role
             ).manage_channels
         ):
-            await interaction.send(
+            await interaction.response.send_message(
                 "Cannot pin messages in this channel.", ephemeral=True
             )
             return
 
         if message.pinned:
-            await interaction.send("The message is already pinned.", ephemeral=True)
+            await interaction.response.send_message(
+                "The message is already pinned.", ephemeral=True
+            )
             return
 
         await interaction.response.defer(ephemeral=True)
         await message.pin()
-        await interaction.send("Message pinned")
+        await interaction.followup.send("Message pinned")
 
-    @bot.message_command(name="Unpin message")
-    async def unpin(
-        interaction: ApplicationCommandInteraction, message: Message
-    ) -> None:
+    @bot.tree.context_menu(name="Unpin message")
+    async def unpin(interaction: Interaction, message: Message) -> None:
         if interaction.guild is None:
-            await interaction.send(
+            await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
             )
             return
+
+        assert isinstance(interaction.channel, GuildChannel)
 
         if (
             interaction.channel.category is None
@@ -177,14 +183,17 @@ def setup(bot: MyBot) -> None:
                 interaction.guild.default_role
             ).manage_channels
         ):
-            await interaction.send(
+            await interaction.response.send_message(
                 "Cannot unpin messages from this channel.", ephemeral=True
             )
+            return
 
         if not message.pinned:
-            await interaction.send("The message is not pinned.", ephemeral=True)
+            await interaction.response.send_message(
+                "The message is not pinned.", ephemeral=True
+            )
             return
 
         await interaction.response.defer(ephemeral=True)
         await message.unpin()
-        await interaction.send("Message unpinned")
+        await interaction.followup.send("Message unpinned")

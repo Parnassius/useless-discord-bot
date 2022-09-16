@@ -4,16 +4,8 @@ from collections.abc import Awaitable, Callable
 
 import aiohttp
 from cairosvg import svg2png  # type: ignore
-from disnake.embeds import Embed
-from disnake.file import File
-from disnake.interactions.application_command import ApplicationCommandInteraction
-from disnake.interactions.base import Interaction
-from disnake.interactions.message import MessageInteraction
-from disnake.interactions.modal import ModalInteraction
-from disnake.ui.button import Button
-from disnake.ui.modal import Modal
-from disnake.ui.text_input import TextInput
-from disnake.ui.view import View
+from discord import Embed, File, Interaction
+from discord.ui import Button, Modal, TextInput, View
 from PIL import Image, ImageColor, ImageDraw  # type: ignore
 
 from useless_discord_bot.bot import MyBot
@@ -27,15 +19,17 @@ TWEMOJI_PNG_URL = f"{TWEMOJI_URL}72x72/{{}}.png"
 
 class ChangeColorModal(Modal):
     def __init__(self, *, num: int, color: str, view: "ChangeColorView") -> None:
-        super().__init__(
-            title=f"Edit color {num+1}",
-            components=TextInput(label="Color", custom_id="color", placeholder=color),
-        )
+        super().__init__(title=f"Edit color {num+1}")
         self.num = num
         self.view = view
 
-    async def callback(self, interaction: ModalInteraction, /) -> None:
-        self.view.colors[self.num] = interaction.text_values["color"]
+        self.color: TextInput["ChangeColorModal"] = TextInput(
+            label="Color", custom_id="color", placeholder=color
+        )
+        self.add_item(self.color)
+
+    async def on_submit(self, interaction: Interaction) -> None:
+        self.view.colors[self.num] = self.color.value
         await self.view.update_embed(interaction)
 
 
@@ -46,7 +40,7 @@ class ChangeColorButton(Button["ChangeColorView"]):
         self.num = num
         self.color = color
 
-    async def callback(self, interaction: MessageInteraction, /) -> None:
+    async def callback(self, interaction: Interaction) -> None:
         modal = ChangeColorModal(
             num=self.num,
             color=self.color,
@@ -60,7 +54,7 @@ class ChangeColorView(View):
         self,
         *,
         colors: list[str],
-        update_embed: Callable[[ModalInteraction], Awaitable[None]],
+        update_embed: Callable[[Interaction], Awaitable[None]],
     ) -> None:
         super().__init__()
         self.colors = colors
@@ -73,7 +67,7 @@ class ChangeColorView(View):
 class ColorEmoji:
     def __init__(
         self,
-        interaction: ApplicationCommandInteraction,
+        interaction: Interaction,
         svg: str,
     ) -> None:
         self.interaction = interaction
@@ -87,7 +81,7 @@ class ColorEmoji:
     async def send_embed(self, thumbnail_url: str) -> None:
         await self._send_embed(thumbnail_url=thumbnail_url)
 
-    async def update_embed(self, interaction: ModalInteraction) -> None:
+    async def update_embed(self, interaction: Interaction) -> None:
         await self._send_embed(interaction=interaction)
 
     async def _send_embed(
@@ -116,7 +110,9 @@ class ColorEmoji:
         if interaction is None:
             interaction = self.interaction
 
-        await interaction.send(embed=embed, files=files, view=view, ephemeral=True)
+        await interaction.response.send_message(
+            embed=embed, files=files, view=view, ephemeral=True
+        )
 
     def _colors_image(self) -> io.BytesIO:
         with Image.new("RGB", (420, 100)) as im:
@@ -166,20 +162,20 @@ def to_code_point(unicode_surrogates: str) -> str:
     return "-".join(r)
 
 
-def setup(bot: MyBot) -> None:
-    @bot.slash_command(
+async def setup(bot: MyBot) -> None:
+    @bot.tree.command(
         description="Create a new emoji by changing the colors of a default one."
     )
-    async def coloremoji(
-        interaction: ApplicationCommandInteraction, emoji: str
-    ) -> None:
+    async def coloremoji(interaction: Interaction, emoji: str) -> None:
         emoji_code_point = to_code_point(emoji)
         emoji_svg_url = TWEMOJI_SVG_URL.format(emoji_code_point)
         emoji_png_url = TWEMOJI_PNG_URL.format(emoji_code_point)
         async with aiohttp.ClientSession() as session:
             async with session.get(emoji_svg_url) as resp:
                 if resp.status != 200:
-                    await interaction.send("Emoji not found.", ephemeral=True)
+                    await interaction.response.send_message(
+                        "Emoji not found.", ephemeral=True
+                    )
                     return
                 svg = await resp.text()
 

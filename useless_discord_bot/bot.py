@@ -1,14 +1,32 @@
+import io
+from pathlib import Path
 from sys import exc_info
 from traceback import format_exception
 from typing import Any
 
-from disnake.abc import GuildChannel
-from disnake.channel import TextChannel
-from disnake.ext import commands
-from disnake.interactions.application_command import ApplicationCommandInteraction
+from discord import File, Object, TextChannel
+from discord.abc import GuildChannel
+from discord.ext import commands
 
 
 class MyBot(commands.Bot):
+    def __init__(self, *args: Any, test_guild_id: int | None = None, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.test_guild_id = test_guild_id
+
+    async def setup_hook(self) -> None:
+        modules = Path(__file__).parent / "plugins"
+        for f in modules.glob("*.py"):
+            if f.is_file() and f.name != "__init__.py":
+                await self.load_extension(f"useless_discord_bot.plugins.{f.stem}")
+
+        if self.test_guild_id:
+            test_guild = Object(id=self.test_guild_id)
+            self.tree.copy_global_to(guild=test_guild)
+            await self.tree.sync(guild=test_guild)
+        else:
+            await self.tree.sync()
+
     async def on_ready(self) -> None:
         print(f"Logged on as {self.user}!")
 
@@ -29,37 +47,8 @@ class MyBot(commands.Bot):
         # pylint: disable=unused-argument
         target = await self.fetch_user(self.owner_id)
         tb = format_exception(*exc_info())
-        await target.send(
-            f"Handler `{event_method}` raised an exception:\n" f"```{''.join(tb)}```"
-        )
-
-    async def on_message_command_error(
-        self,
-        interaction: ApplicationCommandInteraction,
-        exception: commands.CommandError,
-    ) -> None:
-        target = await self.fetch_user(self.owner_id)
-        command = interaction.application_command.name
-        tb = format_exception(type(exception), exception, exception.__traceback__)
-        await target.send(
-            f"Message command `{command}` raised an exception:\n" f"```{''.join(tb)}```"
-        )
-
-        await interaction.send(str(exception), ephemeral=True)
-
-    async def on_slash_command_error(
-        self,
-        interaction: ApplicationCommandInteraction,
-        exception: commands.CommandError,
-    ) -> None:
-        target = await self.fetch_user(self.owner_id)
-        command = interaction.application_command.name
-        tb = format_exception(type(exception), exception, exception.__traceback__)
-        await target.send(
-            f"Slash command `{command}` raised an exception:\n" f"```{''.join(tb)}```"
-        )
-
-        await interaction.send(str(exception), ephemeral=True)
+        file = File(io.BytesIO("".join(tb).encode()), filename="traceback.txt")
+        await target.send(f"Handler `{event_method}` raised an exception", file=file)
 
     async def on_guild_channel_create(self, channel: GuildChannel) -> None:
         if not isinstance(channel, TextChannel):
