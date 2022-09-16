@@ -18,11 +18,11 @@ jobs:
           cache: "poetry"
       - name: Install dependencies on a cache miss
         if: steps.setup-python.outputs.cache-hit != 'true'
-        run: poetry install --remove-untracked
+        run: poetry install --sync
       - name: Check import order
-        run: poetry run poe isort_check
+        run: poetry run poe isort-check
       - name: Check formatting using black
-        run: poetry run poe black_check
+        run: poetry run poe black-check
       - name: Test with mypy
         run: poetry run poe mypy
       - name: Test with pylint

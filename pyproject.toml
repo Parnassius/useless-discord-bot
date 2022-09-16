@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry_core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
@@ -50,9 +50,9 @@ isort = "isort ."
 black = "black ."
 
 tests = ["test"]
-test = ["isort_check", "black_check", "mypy", "pylint"]
-isort_check = "isort . --check"
-black_check = "black . --check"
+test = ["isort-check", "black-check", "mypy", "pylint"]
+isort-check = "isort . --check"
+black-check = "black . --check"
 mypy = "mypy useless_discord_bot"
 pylint = "pylint useless_discord_bot --disable=fixme"
 
@@ -71,7 +71,7 @@ cairosvg = "2.5.2"
 pillow = "9.2.0"
 typenv = "0.2.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "22.8.0"
 isort = "5.10.1"
 mypy = "0.971"
