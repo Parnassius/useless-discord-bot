@@ -4,8 +4,7 @@ from sys import exc_info
 from traceback import format_exception
 from typing import Any
 
-from discord import File, Object, TextChannel
-from discord.abc import GuildChannel
+from discord import File, Object
 from discord.ext import commands
 
 
@@ -30,37 +29,9 @@ class MyBot(commands.Bot):
     async def on_ready(self) -> None:
         print(f"Logged on as {self.user}!")
 
-        for guild in self.guilds:
-            if not guild.me.guild_permissions.manage_roles:
-                continue
-            for category in guild.categories:
-                if not category.overwrites_for(guild.default_role).manage_channels:
-                    continue
-                for channel in category.text_channels:
-                    if not channel.overwrites_for(guild.default_role).manage_channels:
-                        continue
-                    await channel.set_permissions(
-                        channel.guild.default_role, manage_channels=None
-                    )
-
     async def on_error(self, event_method: str, *args: Any, **kwargs: Any) -> None:
         # pylint: disable=unused-argument
         target = await self.fetch_user(self.owner_id)
         tb = format_exception(*exc_info())
         file = File(io.BytesIO("".join(tb).encode()), filename="traceback.txt")
         await target.send(f"Handler `{event_method}` raised an exception", file=file)
-
-    async def on_guild_channel_create(self, channel: GuildChannel) -> None:
-        if not isinstance(channel, TextChannel):
-            return
-
-        if (
-            channel.guild.me.guild_permissions.manage_roles
-            and channel.category
-            and channel.category.overwrites_for(
-                channel.guild.default_role
-            ).manage_channels
-        ):
-            await channel.set_permissions(
-                channel.guild.default_role, manage_channels=None
-            )

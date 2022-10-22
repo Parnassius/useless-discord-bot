@@ -5,6 +5,37 @@ from useless_discord_bot.bot import MyBot
 
 
 async def setup(bot: MyBot) -> None:
+    @bot.listen()
+    async def on_ready() -> None:
+        for guild in bot.guilds:
+            if not guild.me.guild_permissions.manage_roles:
+                continue
+            for category in guild.categories:
+                if not category.overwrites_for(guild.default_role).manage_channels:
+                    continue
+                for channel in category.text_channels:
+                    if not channel.overwrites_for(guild.default_role).manage_channels:
+                        continue
+                    await channel.set_permissions(
+                        channel.guild.default_role, manage_channels=None
+                    )
+
+    @bot.listen()
+    async def on_guild_channel_create(channel: GuildChannel) -> None:
+        if not isinstance(channel, TextChannel):
+            return
+
+        if (
+            channel.guild.me.guild_permissions.manage_roles
+            and channel.category
+            and channel.category.overwrites_for(
+                channel.guild.default_role
+            ).manage_channels
+        ):
+            await channel.set_permissions(
+                channel.guild.default_role, manage_channels=None
+            )
+
     @bot.tree.command(description="Move this channel to another category.")
     async def moveto(interaction: Interaction, channel: GuildChannel) -> None:
         if interaction.guild is None:
