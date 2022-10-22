@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import tomllib
 from pathlib import Path
 from sys import exc_info
 from traceback import format_exception
@@ -11,9 +12,26 @@ from discord.ext import commands
 
 
 class MyBot(commands.Bot):
-    def __init__(self, *args: Any, test_guild_id: int | None = None, **kwargs: Any):
+    def __init__(
+        self,
+        *args: Any,
+        test_guild_id: int | None = None,
+        config_path: Path,
+        **kwargs: Any,
+    ):
         super().__init__(*args, **kwargs)
+
         self.test_guild_id = test_guild_id
+        self.config_path = config_path
+
+    def get_config(self, config_file: str) -> dict[Any, Any]:
+        file = self.config_path / f"{config_file}.toml"
+        try:
+            with file.open("rb") as f:
+                data = tomllib.load(f)
+        except FileNotFoundError:
+            data = {}
+        return data
 
     async def setup_hook(self) -> None:
         modules = Path(__file__).parent / "plugins"

@@ -2,6 +2,7 @@ FROM python:3.11-alpine as base
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
+ENV BOT_CONFIG_PATH=/data
 WORKDIR /app
 
 RUN apk add --no-cache cairo
