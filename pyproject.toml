@@ -65,18 +65,18 @@ authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aiohttp = "3.8.1"
+aiohttp = "3.8.3"
 cairosvg = "2.5.2"
-"discord.py" = "2.0.1"
-pillow = "9.2.0"
+discord-py = "2.1.0"
+pillow = "9.3.0"
 typenv = "0.2.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "22.8.0"
+black = "22.10.0"
 isort = "5.10.1"
-mypy = "0.971"
-poethepoet = "0.16.2"
-pylint = "2.15.2"
+mypy = "0.991"
+poethepoet = "0.16.4"
+pylint = "2.15.6"
 
 [tool.poetry.scripts]
 bot = "useless_discord_bot.__main__:main"

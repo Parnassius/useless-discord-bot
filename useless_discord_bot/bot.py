@@ -29,8 +29,10 @@ class MyBot(commands.Bot):
     async def on_ready(self) -> None:
         print(f"Logged on as {self.user}!")
 
-    async def on_error(self, event_method: str, *args: Any, **kwargs: Any) -> None:
+    async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
         # pylint: disable=unused-argument
+        if not self.owner_id:
+            return
         target = await self.fetch_user(self.owner_id)
         tb = format_exception(*exc_info())
         file = File(io.BytesIO("".join(tb).encode()), filename="traceback.txt")
