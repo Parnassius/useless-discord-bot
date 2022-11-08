@@ -1,4 +1,5 @@
 from discord import Intents
+from discord.ext import commands
 from typenv import Env
 
 from .bot import MyBot
@@ -17,7 +18,7 @@ def main() -> None:
     intents.members = True  # pylint: disable=assigning-non-slot
 
     bot = MyBot(
-        ".",
+        commands.when_mentioned,
         tree_cls=MyTree,
         intents=intents,
         owner_id=owner_id,
