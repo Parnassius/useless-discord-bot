@@ -11,6 +11,9 @@ async def setup(bot: MyBot) -> None:
         if not member.guild.me.guild_permissions.manage_roles:
             return
 
+        if before.channel == after.channel:
+            return
+
         if before.channel is not None:
             role = next(
                 (x for x in member.guild.roles if x.name == f"call-{before.channel}"),
