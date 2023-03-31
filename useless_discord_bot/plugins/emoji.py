@@ -14,7 +14,7 @@ from useless_discord_bot.bot import MyBot
 
 ElementTree.register_namespace("", "http://www.w3.org/2000/svg")
 
-TWEMOJI_URL = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/"
+TWEMOJI_URL = "https://raw.githubusercontent.com/jdecked/twemoji/master/assets/"
 TWEMOJI_SVG_URL = f"{TWEMOJI_URL}svg/{{}}.svg"
 TWEMOJI_PNG_URL = f"{TWEMOJI_URL}72x72/{{}}.png"
 
