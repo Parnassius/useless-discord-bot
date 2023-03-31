@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 from discord import Intents
 from discord.ext import commands
 from typenv import Env
 
-from .bot import MyBot
-from .tree import MyTree
+from useless_discord_bot.bot import MyBot
+from useless_discord_bot.tree import MyTree
 
 
 def main() -> None:
@@ -15,7 +17,7 @@ def main() -> None:
     test_guild_id = env.int("TEST_GUILD_ID", default=None)
 
     intents = Intents.default()
-    intents.members = True  # pylint: disable=assigning-non-slot
+    intents.members = True
 
     bot = MyBot(
         commands.when_mentioned,

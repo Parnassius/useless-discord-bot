@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import io
 from pathlib import Path
 from sys import exc_info
@@ -30,7 +32,6 @@ class MyBot(commands.Bot):
         print(f"Logged on as {self.user}!")
 
     async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
-        # pylint: disable=unused-argument
         if not self.owner_id:
             return
         target = await self.fetch_user(self.owner_id)

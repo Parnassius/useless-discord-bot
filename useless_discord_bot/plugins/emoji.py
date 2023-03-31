@@ -1,16 +1,18 @@
+from __future__ import annotations
+
 import io
-import xml.etree.ElementTree as ET
 from collections.abc import Awaitable, Callable
+from xml.etree import ElementTree
 
 import aiohttp
-from cairosvg import svg2png  # type: ignore
+from cairosvg import svg2png  # type: ignore[import]
 from discord import Embed, File, Interaction
 from discord.ui import Button, Modal, TextInput, View
-from PIL import Image, ImageColor, ImageDraw  # type: ignore
+from PIL import Image, ImageColor, ImageDraw  # type: ignore[import]
 
 from useless_discord_bot.bot import MyBot
 
-ET.register_namespace("", "http://www.w3.org/2000/svg")
+ElementTree.register_namespace("", "http://www.w3.org/2000/svg")
 
 TWEMOJI_URL = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/"
 TWEMOJI_SVG_URL = f"{TWEMOJI_URL}svg/{{}}.svg"
@@ -18,12 +20,12 @@ TWEMOJI_PNG_URL = f"{TWEMOJI_URL}72x72/{{}}.png"
 
 
 class ChangeColorModal(Modal):
-    def __init__(self, *, num: int, color: str, view: "ChangeColorView") -> None:
+    def __init__(self, *, num: int, color: str, view: ChangeColorView) -> None:
         super().__init__(title=f"Edit color {num+1}")
         self.num = num
         self.view = view
 
-        self.color: TextInput["ChangeColorModal"] = TextInput(
+        self.color: TextInput[ChangeColorModal] = TextInput(
             label="Color", custom_id="color", placeholder=color
         )
         self.add_item(self.color)
@@ -74,7 +76,7 @@ class ColorEmoji:
 
         self.svg = svg
 
-        tags = ET.fromstring(self.svg).findall(".//*[@fill]")
+        tags = ElementTree.fromstring(self.svg).findall(".//*[@fill]")
         self.original_colors = sorted(x for x in {i.get("fill") for i in tags} if x)
         self.colors = self.original_colors.copy()
 
@@ -131,15 +133,16 @@ class ColorEmoji:
         return colors_image
 
     def _emoji_image(self) -> io.BytesIO:
-        svg_image = ET.fromstring(self.svg)
+        svg_image = ElementTree.fromstring(self.svg)
         tags = svg_image.findall(".//*[@fill]")
-        color_mappings = dict(zip(self.original_colors, self.colors))
+        color_mappings = dict(zip(self.original_colors, self.colors, strict=True))
         for tag in tags:
             color = tag.get("fill")
             if color is not None:
                 tag.set("fill", color_mappings[color])
         image = svg2png(
-            bytestring=ET.tostring(svg_image, encoding="unicode"), output_width=128
+            bytestring=ElementTree.tostring(svg_image, encoding="unicode"),
+            output_width=128,
         )
         return io.BytesIO(image)
 

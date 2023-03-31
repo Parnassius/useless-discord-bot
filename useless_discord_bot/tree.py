@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import io
 from traceback import format_exception
 
 from discord import File, Interaction
 from discord.app_commands import AppCommandError, CommandTree
 
-from .bot import MyBot
+from useless_discord_bot.bot import MyBot
 
 
 class MyTree(CommandTree[MyBot]):

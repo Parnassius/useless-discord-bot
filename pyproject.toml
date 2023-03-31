@@ -3,10 +3,6 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
-[tool.isort]
-profile = "black"
-
-
 [tool.mypy]
 show_error_codes = true
 warn_unused_configs = true
@@ -45,16 +41,13 @@ strict_equality = true
 
 
 [tool.poe.tasks]
-format = ["isort", "black"]
-isort = "isort ."
-black = "black ."
+ruff-fix = "ruff useless_discord_bot --fix-only --exit-zero"
+black = "black useless_discord_bot"
+format = ["ruff-fix", "black"]
 
-tests = ["test"]
-test = ["isort-check", "black-check", "mypy", "pylint"]
-isort-check = "isort . --check"
-black-check = "black . --check"
 mypy = "mypy useless_discord_bot"
-pylint = "pylint useless_discord_bot --disable=fixme"
+ruff = "ruff useless_discord_bot"
+all = ["format", "mypy", "ruff"]
 
 
 [tool.poetry]
@@ -73,37 +66,54 @@ typenv = "0.2.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "22.12.0"
-isort = "5.11.4"
 mypy = "0.991"
 poethepoet = "0.16.5"
-pylint = "2.15.9"
+ruff = "0.0.260"
 
 [tool.poetry.scripts]
 bot = "useless_discord_bot.__main__:main"
 
 
-[tool.pylint.main]
-load-plugins = [
-    "pylint.extensions.bad_builtin",
-    "pylint.extensions.check_elif",
-    "pylint.extensions.for_any_all",
-    "pylint.extensions.typing",
+[tool.ruff]
+target-version = "py311"
+select = [
+    "A",     # flake8-builtins
+    "ARG",   # flake8-unused-arguments
+    "B",     # flake8-bugbear
+    "C4",    # flake8-comprehensions
+    "DTZ",   # flake8-datetimez
+    "E",     # pycodestyle
+    "EM",    # flake8-errmsg
+    "F",     # pyflakes
+    "I",     # isort
+    "ICN",   # flake8-import-conventions
+    "ISC",   # flake8-implicit-str-concat
+    "N",     # pep8-naming
+    "PGH",   # pygrep-hooks
+    "PTH",   # flake8-use-pathlib
+    "RET",   # flake8-return
+    "RUF",   # Ruff-specific rules
+    "T10",   # flake8-debugger
+    "TID",   # flake8-tidy-imports
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle
+    "YTT",   # flake8-2020
 ]
-
-[tool.pylint.messages_control]
-disable = [
-    "invalid-name",
-    "missing-class-docstring",
-    "missing-function-docstring",
-    "missing-module-docstring",
-
-    "too-many-locals",
-    "too-many-statements",
-
-    "consider-alternative-union-syntax",
+fixable = [
+    "I",     # isort
+    "F401",  # unused-import
+    "TID",   # flake8-tidy-imports
+    "UP",    # pyupgrade
 ]
-enable = ["useless-suppression"]
+dummy-variable-rgx = "^_$"
 
-[tool.pylint.format]
-expected-line-ending-format = "LF"
-max-line-length = "88"
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.ruff.isort]
+required-imports = ["from __future__ import annotations"]
+split-on-trailing-comma = false
