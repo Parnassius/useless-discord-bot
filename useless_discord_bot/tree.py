@@ -6,14 +6,12 @@ from traceback import format_exception
 from discord import File, Interaction
 from discord.app_commands import AppCommandError, CommandTree
 
-from useless_discord_bot.bot import MyBot
 
-
-class MyTree(CommandTree[MyBot]):
+class MyTree(CommandTree):
     async def on_error(
         self, interaction: Interaction, error: AppCommandError, /
     ) -> None:
-        target = await interaction.client.fetch_user(
+        target = await interaction.client.fetch_user(  # type: ignore[attr-defined]
             interaction.client.owner_id  # type: ignore[attr-defined]
         )
         command = f"`{interaction.command.name}`" if interaction.command else "tree"
