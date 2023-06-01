@@ -71,7 +71,7 @@ poethepoet = "0.20.0"
 ruff = "0.0.270"
 
 [tool.poetry.scripts]
-bot = "useless_discord_bot.__main__:main"
+useless-discord-bot = "useless_discord_bot.__main__:main"
 
 
 [tool.ruff]
