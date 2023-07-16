@@ -17,7 +17,6 @@ def main() -> None:
     test_guild_id = env.int("TEST_GUILD_ID", default=None)
 
     intents = Intents.default()
-    intents.members = True
 
     bot = MyBot(
         commands.when_mentioned,
