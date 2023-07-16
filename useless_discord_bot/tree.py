@@ -6,14 +6,16 @@ from traceback import format_exception
 from discord import File, Interaction
 from discord.app_commands import AppCommandError, CommandTree
 
+from useless_discord_bot.bot import MyBot
 
-class MyTree(CommandTree):
+
+class MyTree(CommandTree[MyBot]):
     async def on_error(
-        self, interaction: Interaction, error: AppCommandError, /
+        self, interaction: Interaction[MyBot], error: AppCommandError, /
     ) -> None:
-        target = await interaction.client.fetch_user(  # type: ignore[attr-defined]
-            interaction.client.owner_id  # type: ignore[attr-defined]
-        )
+        if not interaction.client.owner_id:
+            return
+        target = await interaction.client.fetch_user(interaction.client.owner_id)
         command = f"`{interaction.command.name}`" if interaction.command else "tree"
         tb = format_exception(type(error), error, error.__traceback__)
         file = File(io.BytesIO("".join(tb).encode()), filename="traceback.txt")

@@ -30,7 +30,11 @@ class ChangeColorModal(Modal):
         )
         self.add_item(self.color)
 
-    async def on_submit(self, interaction: Interaction, /) -> None:
+    async def on_submit(
+        self,
+        interaction: Interaction[MyBot],  # type: ignore[override]
+        /,
+    ) -> None:
         self.view.colors[self.num] = self.color.value
         await self.view.update_embed(interaction)
 
@@ -42,7 +46,9 @@ class ChangeColorButton(Button["ChangeColorView"]):
         self.num = num
         self.color = color
 
-    async def callback(self, interaction: Interaction) -> None:
+    async def callback(
+        self, interaction: Interaction[MyBot]  # type: ignore[override]
+    ) -> None:
         modal = ChangeColorModal(
             num=self.num,
             color=self.color,
@@ -56,7 +62,7 @@ class ChangeColorView(View):
         self,
         *,
         colors: list[str],
-        update_embed: Callable[[Interaction], Awaitable[None]],
+        update_embed: Callable[[Interaction[MyBot]], Awaitable[None]],
     ) -> None:
         super().__init__()
         self.colors = colors
@@ -69,7 +75,7 @@ class ChangeColorView(View):
 class ColorEmoji:
     def __init__(
         self,
-        interaction: Interaction,
+        interaction: Interaction[MyBot],
         svg: str,
     ) -> None:
         self.interaction = interaction
@@ -83,14 +89,14 @@ class ColorEmoji:
     async def send_embed(self, thumbnail_url: str) -> None:
         await self._send_embed(thumbnail_url=thumbnail_url)
 
-    async def update_embed(self, interaction: Interaction) -> None:
+    async def update_embed(self, interaction: Interaction[MyBot]) -> None:
         await self._send_embed(interaction=interaction)
 
     async def _send_embed(
         self,
         *,
         thumbnail_url: str | None = None,
-        interaction: Interaction | None = None,
+        interaction: Interaction[MyBot] | None = None,
     ) -> None:
         files = []
         embed = Embed()
@@ -169,7 +175,7 @@ async def setup(bot: MyBot) -> None:
     @bot.tree.command(  # type: ignore[arg-type]
         description="Create a new emoji by changing the colors of a default one."
     )
-    async def coloremoji(interaction: Interaction, emoji: str) -> None:
+    async def coloremoji(interaction: Interaction[MyBot], emoji: str) -> None:
         emoji_code_point = to_code_point(emoji)
         emoji_svg_url = TWEMOJI_SVG_URL.format(emoji_code_point)
         emoji_png_url = TWEMOJI_PNG_URL.format(emoji_code_point)

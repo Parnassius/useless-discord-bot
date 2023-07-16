@@ -41,7 +41,7 @@ async def setup(bot: MyBot) -> None:
     @bot.tree.command(  # type: ignore[arg-type]
         description="Move this channel to another category."
     )
-    async def moveto(interaction: Interaction, channel: GuildChannel) -> None:
+    async def moveto(interaction: Interaction[MyBot], channel: GuildChannel) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
@@ -102,7 +102,7 @@ async def setup(bot: MyBot) -> None:
     @bot.tree.command(  # type: ignore[arg-type]
         description="Change the name of this channel."
     )
-    async def name(interaction: Interaction, new_name: str) -> None:
+    async def name(interaction: Interaction[MyBot], new_name: str) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
@@ -136,7 +136,7 @@ async def setup(bot: MyBot) -> None:
     @bot.tree.command(  # type: ignore[arg-type]
         description="Change the topic of this channel."
     )
-    async def topic(interaction: Interaction, new_topic: str) -> None:
+    async def topic(interaction: Interaction[MyBot], new_topic: str) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
@@ -172,7 +172,7 @@ async def setup(bot: MyBot) -> None:
         await interaction.followup.send("Channel topic updated.")
 
     @bot.tree.context_menu(name="Pin message")
-    async def pin(interaction: Interaction, message: Message) -> None:
+    async def pin(interaction: Interaction[MyBot], message: Message) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
@@ -203,7 +203,7 @@ async def setup(bot: MyBot) -> None:
         await interaction.followup.send("Message pinned")
 
     @bot.tree.context_menu(name="Unpin message")
-    async def unpin(interaction: Interaction, message: Message) -> None:
+    async def unpin(interaction: Interaction[MyBot], message: Message) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
                 "This command cannot be used in DMs.", ephemeral=True
