@@ -58,7 +58,7 @@ authors = ["Parnassius <Parnassius@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-aiohttp = "3.8.4"
+aiohttp = "3.8.5"
 cairosvg = "2.7.0"
 discord-py = "2.3.1"
 pillow = "10.0.0"
