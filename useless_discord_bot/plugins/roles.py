@@ -49,6 +49,8 @@ class SelfRoleSelect(Select[View]):
         member = interaction.user
         assert isinstance(member, Member)
 
+        await interaction.response.defer(ephemeral=True, thinking=True)
+
         added_role_ids = {int(x) for x in self.values}
         removed_roles = (x for x in self.roles.keys() if x.id not in added_role_ids)
         added_roles = (Object(x) for x in added_role_ids)
@@ -56,7 +58,7 @@ class SelfRoleSelect(Select[View]):
         await member.remove_roles(*removed_roles)
         await member.add_roles(*added_roles)
 
-        await interaction.response.send_message("Roles updated.", ephemeral=True)
+        await interaction.followup.send("Roles updated.")
 
 
 class SelfRoleButton(Button["SelfRoleButtonsView"]):
