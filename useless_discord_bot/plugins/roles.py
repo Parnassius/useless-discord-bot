@@ -143,7 +143,7 @@ async def setup(bot: MyBot) -> None:
 
                 roles = {}
                 descriptions = []
-                for role in channel.guild.roles:
+                for role in reversed(channel.guild.roles):
                     if role >= top_role or role <= bottom_role or role.permissions:
                         continue
 
