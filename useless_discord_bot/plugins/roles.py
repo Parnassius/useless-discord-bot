@@ -23,7 +23,7 @@ class SelfRoleSelect(Select[View]):
         *,
         placeholder: str,
         unique: bool,
-        roles: dict[Role, tuple[Emoji | None, int]],
+        roles: dict[Role, Emoji | None],
         member: Member,
     ) -> None:
         self.roles = roles
@@ -39,7 +39,7 @@ class SelfRoleSelect(Select[View]):
                     emoji=emoji,
                     default=role in member.roles,
                 )
-                for role, (emoji, _) in self.roles.items()
+                for role, emoji in self.roles.items()
             ],
         )
 
@@ -63,7 +63,7 @@ class SelfRoleSelect(Select[View]):
 
 class SelfRoleButton(Button["SelfRoleButtonsView"]):
     def __init__(
-        self, *, label: str, unique: bool, roles: dict[Role, tuple[Emoji | None, int]]
+        self, *, label: str, unique: bool, roles: dict[Role, Emoji | None]
     ) -> None:
         self.label: str
         super().__init__(label=label)
@@ -88,7 +88,7 @@ class SelfRoleButtonsView(View):
     def __init__(
         self,
         *,
-        data: list[tuple[str, bool, dict[Role, tuple[Emoji | None, int]]]],
+        data: list[tuple[str, bool, dict[Role, Emoji | None]]],
     ) -> None:
         super().__init__(timeout=None)
         for label, unique, roles in data:
@@ -119,34 +119,40 @@ async def setup(bot: MyBot) -> None:
             assert isinstance(emoji_guild, Guild)
             embeds = []
             view_data = []
+
+            if emoji_guild.id not in old_emojis:
+                old_emojis[emoji_guild.id] = {
+                    x.name: x
+                    for x in emoji_guild.emojis
+                    if x.name.startswith("selfrole_")
+                }
+
             for section in message_data["sections"]:
-                old_emojis.update(
-                    {
-                        (emoji_guild.id, x.name): x
-                        for x in emoji_guild.emojis
-                        if x.name.startswith("selfrole_")
-                    }
-                )
                 unique = bool(section.get("unique"))
                 message_content = section.get("msg")
                 button_content = section.get("btn")
+                if not message_content or not button_content:
+                    continue
+
+                top_role_id = section.get("top_role", 0)
+                bottom_role_id = section.get("bottom_role", 0)
+                top_role = channel.guild.get_role(top_role_id)
+                bottom_role = channel.guild.get_role(bottom_role_id)
+                if not top_role or not bottom_role:
+                    continue
+
                 roles = {}
-                for role_id in section["roles"]:
-                    if isinstance(role_id, list):
-                        role_id, role_channel_id = role_id
-                    else:
-                        role_channel_id = None
-
-                    role = channel.guild.get_role(role_id)
-
-                    if role is None:
+                descriptions = []
+                for role in channel.guild.roles:
+                    if role >= top_role or role <= bottom_role or role.permissions:
                         continue
+
                     if role.color.value == 0:
                         emoji = None
                     else:
                         name = f"selfrole_{role.color.value}"
-                        if (emoji_guild.id, name) in old_emojis:
-                            emoji = old_emojis[emoji_guild.id, name]
+                        if name in old_emojis.get(emoji_guild.id, {}):
+                            emoji = old_emojis[emoji_guild.id][name]
                         else:
                             role_color = "".join(
                                 f"{x:02X}" for x in role.color.to_rgb()
@@ -159,23 +165,26 @@ async def setup(bot: MyBot) -> None:
                                 name=name, image=image
                             )
                         used_emojis.append(emoji)
-                    roles[role] = emoji, role_channel_id
 
-                descriptions = []
-                for role, (_, role_channel_id) in roles.items():
                     description = f"<@&{role.id}>"
-                    if role_channel_id:
-                        description += f" <#{role_channel_id}>"
+                    for role_channel in channel.guild.text_channels:
+                        if not role_channel.overwrites_for(role).is_empty():
+                            description += f" <#{role_channel.id}>"
+
+                    roles[role] = emoji
                     descriptions.append(description)
+
                 embeds.append(
                     Embed(title=message_content, description="\n".join(descriptions))
                 )
                 view_data.append((button_content, unique, roles))
 
-            view = SelfRoleButtonsView(data=view_data)
+            if len(embeds):
+                view = SelfRoleButtonsView(data=view_data)
 
-            await message.edit(content="", embeds=embeds, view=view)
+                await message.edit(content="", embeds=embeds, view=view)
 
-        for emoji in old_emojis.values():
-            if emoji not in used_emojis:
-                await emoji.delete()
+        for guild_emojis in old_emojis.values():
+            for emoji in guild_emojis.values():
+                if emoji not in used_emojis:
+                    await emoji.delete()
