@@ -5,10 +5,10 @@ from collections.abc import Awaitable, Callable
 from xml.etree import ElementTree
 
 import aiohttp
-from cairosvg import svg2png  # type: ignore[import]
+from cairosvg import svg2png  # type: ignore[import-untyped]
 from discord import Embed, File, Interaction
 from discord.ui import Button, Modal, TextInput, View
-from PIL import Image, ImageColor, ImageDraw  # type: ignore[import]
+from PIL import Image, ImageColor, ImageDraw  # type: ignore[import-untyped]
 
 from useless_discord_bot.bot import MyBot
 
