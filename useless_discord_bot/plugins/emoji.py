@@ -172,7 +172,7 @@ def to_code_point(unicode_surrogates: str) -> str:
 
 
 async def setup(bot: MyBot) -> None:
-    @bot.tree.command(  # type: ignore[arg-type]
+    @bot.tree.command(
         description="Create a new emoji by changing the colors of a default one."
     )
     async def coloremoji(interaction: Interaction[MyBot], emoji: str) -> None:

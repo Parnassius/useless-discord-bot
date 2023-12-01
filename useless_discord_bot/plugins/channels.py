@@ -38,9 +38,7 @@ async def setup(bot: MyBot) -> None:
                 channel.guild.default_role, manage_channels=None
             )
 
-    @bot.tree.command(  # type: ignore[arg-type]
-        description="Move this channel to another category."
-    )
+    @bot.tree.command(description="Move this channel to another category.")
     async def moveto(interaction: Interaction[MyBot], channel: GuildChannel) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
@@ -99,9 +97,7 @@ async def setup(bot: MyBot) -> None:
             await interaction.channel.move(after=after, category=category)
         await interaction.followup.send("Channel moved.")
 
-    @bot.tree.command(  # type: ignore[arg-type]
-        description="Change the name of this channel."
-    )
+    @bot.tree.command(description="Change the name of this channel.")
     async def name(interaction: Interaction[MyBot], new_name: str) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
@@ -133,9 +129,7 @@ async def setup(bot: MyBot) -> None:
         await interaction.channel.edit(name=new_name)
         await interaction.followup.send("Channel name updated.")
 
-    @bot.tree.command(  # type: ignore[arg-type]
-        description="Change the topic of this channel."
-    )
+    @bot.tree.command(description="Change the topic of this channel.")
     async def topic(interaction: Interaction[MyBot], new_topic: str) -> None:
         if interaction.guild is None:
             await interaction.response.send_message(
