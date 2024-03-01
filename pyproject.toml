@@ -41,12 +41,12 @@ strict_equality = true
 
 
 [tool.poe.tasks]
-ruff-fix = "ruff useless_discord_bot --fix-only --exit-zero"
+ruff-fix = "ruff check useless_discord_bot --fix-only --exit-zero"
 black = "black useless_discord_bot"
 format = ["ruff-fix", "black"]
 
 mypy = "mypy useless_discord_bot"
-ruff = "ruff useless_discord_bot"
+ruff = "ruff check useless_discord_bot"
 all = ["format", "mypy", "ruff"]
 
 
@@ -76,6 +76,8 @@ useless-discord-bot = "useless_discord_bot.__main__:main"
 
 [tool.ruff]
 target-version = "py312"
+
+[tool.ruff.lint]
 select = [
     "A",     # flake8-builtins
     "ARG",   # flake8-unused-arguments
@@ -108,12 +110,12 @@ fixable = [
 ]
 dummy-variable-rgx = "^_$"
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
-[tool.ruff.flake8-unused-arguments]
+[tool.ruff.lint.flake8-unused-arguments]
 ignore-variadic-names = true
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 required-imports = ["from __future__ import annotations"]
 split-on-trailing-comma = false
