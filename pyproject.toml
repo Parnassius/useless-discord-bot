@@ -65,10 +65,10 @@ pillow = "10.2.0"
 typenv = "0.2.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "24.2.0"
-mypy = "1.8.0"
+black = "24.3.0"
+mypy = "1.9.0"
 poethepoet = "0.25.0"
-ruff = "0.3.0"
+ruff = "0.3.4"
 
 [tool.poetry.scripts]
 useless-discord-bot = "useless_discord_bot.__main__:main"
