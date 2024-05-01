@@ -8,7 +8,7 @@ import aiohttp
 from cairosvg import svg2png  # type: ignore[import-untyped]
 from discord import Embed, File, Interaction
 from discord.ui import Button, Modal, TextInput, View
-from PIL import Image, ImageColor, ImageDraw  # type: ignore[import-untyped]
+from PIL import Image, ImageColor, ImageDraw
 
 from useless_discord_bot.bot import MyBot
 
