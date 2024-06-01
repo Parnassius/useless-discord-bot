@@ -68,7 +68,7 @@ typenv = "0.2.0"
 black = "24.4.2"
 mypy = "1.10.0"
 poethepoet = "0.26.1"
-ruff = "0.4.2"
+ruff = "0.4.7"
 
 [tool.poetry.scripts]
 useless-discord-bot = "useless_discord_bot.__main__:main"
