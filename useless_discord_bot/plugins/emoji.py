@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import io
+import xml.etree.ElementTree as ET
 from collections.abc import Awaitable, Callable
-from xml.etree import ElementTree
 
 import aiohttp
 from cairosvg import svg2png  # type: ignore[import-untyped]
@@ -12,7 +12,7 @@ from PIL import Image, ImageColor, ImageDraw
 
 from useless_discord_bot.bot import MyBot
 
-ElementTree.register_namespace("", "http://www.w3.org/2000/svg")
+ET.register_namespace("", "http://www.w3.org/2000/svg")
 
 TWEMOJI_URL = "https://raw.githubusercontent.com/jdecked/twemoji/master/assets/"
 TWEMOJI_SVG_URL = f"{TWEMOJI_URL}svg/{{}}.svg"
@@ -82,7 +82,7 @@ class ColorEmoji:
 
         self.svg = svg
 
-        tags = ElementTree.fromstring(self.svg).findall(".//*[@fill]")
+        tags = ET.fromstring(self.svg).findall(".//*[@fill]")
         self.original_colors = sorted(x for x in {i.get("fill") for i in tags} if x)
         self.colors = self.original_colors.copy()
 
@@ -139,7 +139,7 @@ class ColorEmoji:
         return colors_image
 
     def _emoji_image(self) -> io.BytesIO:
-        svg_image = ElementTree.fromstring(self.svg)
+        svg_image = ET.fromstring(self.svg)
         tags = svg_image.findall(".//*[@fill]")
         color_mappings = dict(zip(self.original_colors, self.colors, strict=True))
         for tag in tags:
@@ -147,7 +147,7 @@ class ColorEmoji:
             if color is not None:
                 tag.set("fill", color_mappings[color])
         image = svg2png(
-            bytestring=ElementTree.tostring(svg_image, encoding="unicode"),
+            bytestring=ET.tostring(svg_image, encoding="unicode"),
             output_width=128,
         )
         return io.BytesIO(image)
