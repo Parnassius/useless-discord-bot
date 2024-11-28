@@ -44,7 +44,8 @@ class SelfRoleSelect(Select[View]):
         )
 
     async def callback(
-        self, interaction: Interaction[MyBot]  # type: ignore[override]
+        self,
+        interaction: Interaction[MyBot],  # type: ignore[override]
     ) -> None:
         member = interaction.user
         assert isinstance(member, Member)
@@ -71,7 +72,8 @@ class SelfRoleButton(Button["SelfRoleButtonsView"]):
         self.roles = roles
 
     async def callback(
-        self, interaction: Interaction[MyBot]  # type: ignore[override]
+        self,
+        interaction: Interaction[MyBot],  # type: ignore[override]
     ) -> None:
         member = interaction.user
         assert isinstance(member, Member)

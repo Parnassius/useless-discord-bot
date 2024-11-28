@@ -41,9 +41,9 @@ strict_equality = true
 
 
 [tool.poe.tasks]
-ruff-fix = "ruff check useless_discord_bot --fix-only --exit-zero"
-black = "black useless_discord_bot"
-format = ["ruff-fix", "black"]
+ruff-fix = "ruff check useless_discord_bot --fix-only"
+ruff-format = "ruff format useless_discord_bot"
+format = ["ruff-fix", "ruff-format"]
 
 mypy = "mypy useless_discord_bot"
 ruff = "ruff check useless_discord_bot"
@@ -65,7 +65,6 @@ pillow = "11.0.0"
 typenv = "0.2.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "24.10.0"
 mypy = "1.13.0"
 poethepoet = "0.29.0"
 ruff = "0.7.1"
