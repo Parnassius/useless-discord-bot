@@ -17,7 +17,7 @@ def main() -> None:
     token = env.str("TOKEN")
     owner_id = env.int("OWNER_ID")
     test_guild_id = env.int("TEST_GUILD_ID", default=None)
-    config_path = Path(__file__).parent.parent / "config"
+    config_path = Path(__file__).parent.parent.parent / "config"
     if config_path_ := env.str("BOT_CONFIG_PATH", default=""):
         config_path = Path(config_path_)
 
