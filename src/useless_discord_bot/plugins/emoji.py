@@ -21,7 +21,7 @@ TWEMOJI_PNG_URL = f"{TWEMOJI_URL}72x72/{{}}.png"
 
 class ChangeColorModal(Modal):
     def __init__(self, *, num: int, color: str, view: ChangeColorView) -> None:
-        super().__init__(title=f"Edit color {num+1}")
+        super().__init__(title=f"Edit color {num + 1}")
         self.num = num
         self.view = view
 
@@ -42,7 +42,7 @@ class ChangeColorModal(Modal):
 class ChangeColorButton(Button["ChangeColorView"]):
     def __init__(self, *, num: int, color: str) -> None:
         self.view: ChangeColorView
-        super().__init__(label=f"Edit color {num+1}", custom_id=f"color{num}")
+        super().__init__(label=f"Edit color {num + 1}", custom_id=f"color{num}")
         self.num = num
         self.color = color
 
