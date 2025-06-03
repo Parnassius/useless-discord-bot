@@ -4,7 +4,6 @@ from cairosvg import svg2png  # type: ignore[import-untyped]
 from discord import (
     Embed,
     Emoji,
-    Guild,
     Interaction,
     Member,
     Object,
@@ -107,27 +106,19 @@ async def setup(bot: MyBot) -> None:
             "</svg>"
         )
 
-        old_emojis = {}
+        old_emojis = {
+            x.name: x
+            for x in await bot.fetch_application_emojis()
+            if x.name.startswith("selfrole_")
+        }
         used_emojis = []
-
-        dummy_emoji_guild = self_roles.get("dummy_emoji_guild", 0)
-        assert isinstance(dummy_emoji_guild, int)
 
         for message_data in self_roles.get("messages", []):
             channel = bot.get_channel(int(message_data["channel"]))
             assert isinstance(channel, TextChannel)
             message = await channel.fetch_message(int(message_data["message"]))
-            emoji_guild = bot.get_guild(dummy_emoji_guild or channel.guild.id)
-            assert isinstance(emoji_guild, Guild)
             embeds = []
             view_data = []
-
-            if emoji_guild.id not in old_emojis:
-                old_emojis[emoji_guild.id] = {
-                    x.name: x
-                    for x in emoji_guild.emojis
-                    if x.name.startswith("selfrole_")
-                }
 
             for section in message_data["sections"]:
                 unique = bool(section.get("unique"))
@@ -153,8 +144,8 @@ async def setup(bot: MyBot) -> None:
                         emoji = None
                     else:
                         name = f"selfrole_{role.color.value}"
-                        if name in old_emojis.get(emoji_guild.id, {}):
-                            emoji = old_emojis[emoji_guild.id][name]
+                        if name in old_emojis:
+                            emoji = old_emojis[name]
                         else:
                             role_color = "".join(
                                 f"{x:02X}" for x in role.color.to_rgb()
@@ -163,7 +154,7 @@ async def setup(bot: MyBot) -> None:
                                 bytestring=self_role_emoji.format(role_color),
                                 output_width=128,
                             )
-                            emoji = await emoji_guild.create_custom_emoji(
+                            emoji = await bot.create_application_emoji(
                                 name=name, image=image
                             )
                         used_emojis.append(emoji)
@@ -186,7 +177,6 @@ async def setup(bot: MyBot) -> None:
 
                 await message.edit(content="", embeds=embeds, view=view)
 
-        for guild_emojis in old_emojis.values():
-            for emoji in guild_emojis.values():
-                if emoji not in used_emojis:
-                    await emoji.delete()
+        for emoji in old_emojis.values():
+            if emoji not in used_emojis:
+                await emoji.delete()
