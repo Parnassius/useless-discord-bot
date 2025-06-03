@@ -22,6 +22,7 @@ def main() -> None:
         config_path = Path(config_path_)
 
     intents = Intents.default()
+    intents.message_content = True
 
     bot = MyBot(
         commands.when_mentioned,
