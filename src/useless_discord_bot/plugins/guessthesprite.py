@@ -37,7 +37,7 @@ class GuessTheSpriteGame:
 
     async def crop_and_send(self, size: int) -> None:
         with Image.open(self.path) as im:
-            half_crop = round(min(im.width, im.height) / 10 * size) // 2
+            half_crop = round(min(im.width, im.height) / 10 * 1.5**size) // 2
 
             if not self.crop_origin:
                 # If the crop origin has not yet been decided (first crop), then get
@@ -157,7 +157,7 @@ async def setup(bot: MyBot) -> None:
         GuessTheSpriteGame.active_games[interaction.channel] = game
 
         for size in range(4):
-            await game.crop_and_send(size + 1)
+            await game.crop_and_send(size)
             await asyncio.sleep(10)
             if game.ended:
                 return
