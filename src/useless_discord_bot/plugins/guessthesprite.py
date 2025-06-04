@@ -134,8 +134,6 @@ async def setup(bot: MyBot) -> None:
             )
             return
 
-        await interaction.response.defer()
-
         path = interaction.client.config_path / "images"
         if random.randrange(128) == 0:
             path /= "shiny"
@@ -155,6 +153,8 @@ async def setup(bot: MyBot) -> None:
             interaction.followup, interaction.channel, path, species, form
         )
         GuessTheSpriteGame.active_games[interaction.channel] = game
+
+        await interaction.response.defer()
 
         for size in range(4):
             await game.crop_and_send(size)
