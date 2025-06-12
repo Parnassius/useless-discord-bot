@@ -36,6 +36,9 @@ class GuessTheSpriteGame:
         self.ended = False
 
     async def crop_and_send(self, size: int) -> None:
+        if self.ended:
+            return
+
         with Image.open(self.path) as im:
             half_crop = round(min(im.width, im.height) / 10 * 1.5**size) // 2
 
@@ -86,6 +89,9 @@ class GuessTheSpriteGame:
         await self.followup.send(file=file)
 
     async def reveal_answer(self, guess_message: Message | None = None) -> None:
+        if self.ended:
+            return
+
         del self.active_games[self.channel]
         self.ended = True
 
