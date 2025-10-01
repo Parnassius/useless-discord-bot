@@ -15,8 +15,8 @@ useless-discord-bot = "useless_discord_bot.__main__:main"
 
 [dependency-groups]
 dev = [
-    "mypy==1.17.1",
-    "ruff==0.12.11",
+    "mypy==1.18.2",
+    "ruff==0.13.2",
 ]
 
 [build-system]
