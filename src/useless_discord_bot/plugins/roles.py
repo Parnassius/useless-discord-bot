@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from cairosvg import svg2png  # type: ignore[import-untyped]
 from discord import (
     Embed,

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from discord import Member, VoiceState
 
 from useless_discord_bot.bot import MyBot

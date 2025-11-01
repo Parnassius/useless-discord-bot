@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from discord import CategoryChannel, Interaction, Message, TextChannel
 from discord.abc import GuildChannel
 
