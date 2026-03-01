@@ -57,7 +57,7 @@ class GuessTheSpriteGame:
                     # Try again if there are little to no opaque pixels
                     opaque_pixels = sum(
                         1
-                        for alpha in im_cropped.getchannel("A").getdata()
+                        for alpha in iter(im_cropped.getchannel("A").getdata())
                         if alpha == 255
                     )
                     if opaque_pixels > im_cropped.width * im_cropped.height * 0.25:

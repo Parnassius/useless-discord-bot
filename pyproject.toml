@@ -6,7 +6,7 @@ dependencies = [
     "aiohttp==3.13.3",
     "cairosvg==2.8.2",
     "discord-py==2.7.0",
-    "pillow==12.0.0",
+    "pillow==12.1.1",
     "typenv==0.2.0",
 ]
 
