@@ -3,7 +3,7 @@ name = "useless-discord-bot"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
-    "aiohttp==3.13.4",
+    "aiohttp==3.13.5",
     "cairosvg==2.9.0",
     "discord-py==2.7.1",
     "pillow==12.2.0",
@@ -15,8 +15,8 @@ useless-discord-bot = "useless_discord_bot.__main__:main"
 
 [dependency-groups]
 dev = [
-    "mypy==1.20.0",
-    "ruff==0.15.9",
+    "mypy==1.20.2",
+    "ruff==0.15.12",
 ]
 
 [build-system]
