@@ -1,4 +1,4 @@
-from discord import CategoryChannel, Interaction, Message, TextChannel
+from discord import CategoryChannel, Interaction, TextChannel
 from discord.abc import GuildChannel
 
 from useless_discord_bot.bot import MyBot
@@ -162,65 +162,3 @@ async def setup(bot: MyBot) -> None:
         await interaction.response.defer(ephemeral=True)
         await interaction.channel.edit(topic=new_topic)
         await interaction.followup.send("Channel topic updated.")
-
-    @bot.tree.context_menu(name="Pin message")
-    async def pin(interaction: Interaction[MyBot], message: Message) -> None:
-        if interaction.guild is None:
-            await interaction.response.send_message(
-                "This command cannot be used in DMs.", ephemeral=True
-            )
-            return
-
-        assert isinstance(interaction.channel, GuildChannel)
-
-        if (
-            interaction.channel.category is None
-            or not interaction.channel.category.overwrites_for(
-                interaction.guild.default_role
-            ).manage_channels
-        ):
-            await interaction.response.send_message(
-                "Cannot pin messages in this channel.", ephemeral=True
-            )
-            return
-
-        if message.pinned:
-            await interaction.response.send_message(
-                "The message is already pinned.", ephemeral=True
-            )
-            return
-
-        await interaction.response.defer(ephemeral=True)
-        await message.pin()
-        await interaction.followup.send("Message pinned")
-
-    @bot.tree.context_menu(name="Unpin message")
-    async def unpin(interaction: Interaction[MyBot], message: Message) -> None:
-        if interaction.guild is None:
-            await interaction.response.send_message(
-                "This command cannot be used in DMs.", ephemeral=True
-            )
-            return
-
-        assert isinstance(interaction.channel, GuildChannel)
-
-        if (
-            interaction.channel.category is None
-            or not interaction.channel.category.overwrites_for(
-                interaction.guild.default_role
-            ).manage_channels
-        ):
-            await interaction.response.send_message(
-                "Cannot unpin messages from this channel.", ephemeral=True
-            )
-            return
-
-        if not message.pinned:
-            await interaction.response.send_message(
-                "The message is not pinned.", ephemeral=True
-            )
-            return
-
-        await interaction.response.defer(ephemeral=True)
-        await message.unpin()
-        await interaction.followup.send("Message unpinned")
