@@ -63,29 +63,18 @@ strict_equality = true
 
 
 [tool.ruff.lint]
-select = [
+extend-select = [
     "A",     # flake8-builtins
+    "ANN",   # flake8-annotations
     "ARG",   # flake8-unused-arguments
-    "B",     # flake8-bugbear
-    "C4",    # flake8-comprehensions
-    "DTZ",   # flake8-datetimez
-    "E",     # pycodestyle
     "EM",    # flake8-errmsg
-    "F",     # pyflakes
-    "I",     # isort
-    "ICN",   # flake8-import-conventions
-    "ISC",   # flake8-implicit-str-concat
-    "N",     # pep8-naming
-    "PGH",   # pygrep-hooks
-    "PTH",   # flake8-use-pathlib
-    "RET",   # flake8-return
-    "RUF",   # Ruff-specific rules
-    "T10",   # flake8-debugger
+    "INP",   # flake8-no-pep420
+    "RSE",   # flake8-raise
+    "SLF",   # flake8-self
     "TID",   # flake8-tidy-imports
-    "TRY",   # tryceratops
-    "UP",    # pyupgrade
-    "W",     # pycodestyle
-    "YTT",   # flake8-2020
+]
+ignore = [
+    "ANN401",  # any-type
 ]
 fixable = [
     "I",     # isort

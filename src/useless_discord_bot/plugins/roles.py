@@ -50,7 +50,7 @@ class SelfRoleSelect(Select[View]):
         await interaction.response.defer(ephemeral=True, thinking=True)
 
         added_role_ids = {int(x) for x in self.values}
-        removed_roles = (x for x in self.roles.keys() if x.id not in added_role_ids)
+        removed_roles = (x for x in self.roles if x.id not in added_role_ids)
         added_roles = (Object(x) for x in added_role_ids)
 
         await member.remove_roles(*removed_roles)

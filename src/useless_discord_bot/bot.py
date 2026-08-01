@@ -17,7 +17,7 @@ class MyBot(commands.Bot):
         test_guild_id: int | None = None,
         config_path: Path,
         **kwargs: Any,
-    ):
+    ) -> None:
         super().__init__(*args, **kwargs)
 
         self.test_guild_id = test_guild_id
