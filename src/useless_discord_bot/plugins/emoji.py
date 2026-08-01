@@ -178,14 +178,16 @@ async def setup(bot: MyBot) -> None:
         emoji_code_point = to_code_point(emoji)
         emoji_svg_url = TWEMOJI_SVG_URL.format(emoji_code_point)
         emoji_png_url = TWEMOJI_PNG_URL.format(emoji_code_point)
-        async with aiohttp.ClientSession() as session:
-            async with session.get(emoji_svg_url) as resp:
-                if resp.status != 200:
-                    await interaction.response.send_message(
-                        "Emoji not found.", ephemeral=True
-                    )
-                    return
-                svg = await resp.text()
+        async with (
+            aiohttp.ClientSession() as session,
+            session.get(emoji_svg_url) as resp,
+        ):
+            if resp.status != 200:
+                await interaction.response.send_message(
+                    "Emoji not found.", ephemeral=True
+                )
+                return
+            svg = await resp.text()
 
         ce = ColorEmoji(interaction, svg)
 
