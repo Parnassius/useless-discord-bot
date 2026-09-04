@@ -5,7 +5,8 @@ ENV PYTHONUNBUFFERED=1
 ENV BOT_CONFIG_PATH=/data
 WORKDIR /app
 
-RUN apk add --no-cache cairo
+RUN --mount=type=cache,target=/etc/apk/cache \
+    apk add cairo
 
 
 FROM base as builder
@@ -30,7 +31,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM builder as test
 
-RUN apk add --no-cache make
+RUN --mount=type=cache,target=/etc/apk/cache \
+    apk add make
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
