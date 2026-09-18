@@ -734,17 +734,17 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aiohttp", specifier = "==3.14.3" },
-    { name = "cairosvg", specifier = "==2.9.0" },
-    { name = "discord-py", specifier = "==2.7.1" },
-    { name = "pillow", specifier = "==12.3.0" },
-    { name = "typenv", specifier = "==0.2.0" },
+    { name = "aiohttp" },
+    { name = "cairosvg" },
+    { name = "discord-py" },
+    { name = "pillow" },
+    { name = "typenv" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "mypy", specifier = "==2.3.1" },
-    { name = "ruff", specifier = "==0.16.5" },
+    { name = "mypy" },
+    { name = "ruff" },
 ]
 
 [[package]]
